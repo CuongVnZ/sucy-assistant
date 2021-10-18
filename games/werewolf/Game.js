@@ -3,7 +3,12 @@ class Game {
     constructor(Discord, client){
         this.Discord = Discord;
         this.client = client;
+
         this.players = []
+
+        this.isStarted = false;
+
+        this.gameDay = 1;
     }
 
     addPlayer(user){
@@ -19,10 +24,23 @@ class Game {
         return true;
     }
 
+    start(){
+        if(this.isStarted){
+            return
+        }else{
+            this.isStarted = true
+        }
+        console.log("Werewolf started!")
+        setInterval()
+    }
+
     end(){
         //Kick all player
         console.log("Werewolf end!")
     }
+
+
+
 }
 
 module.exports = Game;

@@ -1,3 +1,8 @@
+
+const TICKET_CATEGORY = '894221933497962496'
+const GENERAL_CHANNEL_ID = '891536512934608940'
+const TEST_CHANNEL_ID = '895025719254581248'
+
 module.exports = {
     name: "ticket",
     aliases: [],
@@ -5,7 +10,7 @@ module.exports = {
     description: "open a ticket!",
     async execute(message, args, Discord, client) {
         const channel = await message.guild.channels.create(`ticket : ${message.author.tag}`);
-        channel.setParent('894221933497962496');
+        channel.setParent(TICKET_CATEGORY);
 
         channel.permissionOverwrites.create(message.guild.id, {
             SEND_MESSAGES: false,
@@ -26,7 +31,11 @@ module.exports = {
           throw err;
         }
 
-        messageGlobal = await sendGlobal(Discord, client, message.author, channel.id);
+        title = ''
+        for(i = 0; i < args.length; i++){
+          title = title + args[i] + " ";
+        }
+        messageGlobal = await sendGlobal(Discord, client, message.author, title, channel.id);
         await sleep(1000);
 
         const collector = reactionMesssage.createReactionCollector(
@@ -58,8 +67,12 @@ module.exports = {
         message.channel
           .send(`Bạn đã tạo một câu hỏi! ${channel}`)
           .then((msg) => {
-            setTimeout(() => await msg.delete(), 7000);
-            setTimeout(() => await message.delete(), 3000);
+            setTimeout(async () => {
+              await msg.delete()
+            }, 7000);
+            setTimeout(async () => {
+              await message.delete()
+            }, 3000);
           })
           .catch((err) => {
             throw err;
@@ -69,12 +82,14 @@ module.exports = {
 }
 
 const { MessageEmbed } = require('discord.js');
-async function sendGlobal(Discord, client, user, ticketChannelId){
-    channel = client.channels.cache.get('891536512934608940')
+async function sendGlobal(Discord, client, user, title, ticketChannelId){
+    channel = client.channels.cache.get(GENERAL_CHANNEL_ID)
+    if(client.devMode) channel = client.channels.cache.get(TEST_CHANNEL_ID)
+
     const ICON = '✅'
     let embed = new MessageEmbed()
     .setColor('#5AC0DE')
-    .setTitle(`${user.username} đã đăng một câu hỏi`)
+    .setTitle(user.username + ' đã đăng một câu hỏi với tiêu đề ' + '`' + title + '`')
     .setDescription(`Tham gia trả lời bằng cách nhấn vào react bên dươi\n
         
         ${ICON} : THAM GIA TRẢ LỜI\n\n

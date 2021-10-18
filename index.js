@@ -19,4 +19,6 @@ client.on('ready', () => {
 require('./services/mongoose');
 require('./games/GameController')(Discord, client)
 
+client.devMode = false;
+
 client.login(process.env.CLIENT_TOKEN);
