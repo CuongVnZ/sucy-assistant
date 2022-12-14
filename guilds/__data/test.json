@@ -1,0 +1,40 @@
+{
+    "name": "[SWIN HCM] Athena",
+    "id": "1052598340094799883",
+    "prefix": "-",
+    "features": {
+        "reactions": {
+            "messages": [
+                {
+                    "id": "1052620042170269737",
+                    "roles": [
+                        "COMPUTER SCIENCE",
+                        "ICT"
+                    ],
+                    "symbols": [
+                        "🇨",
+                        "🇮"
+                    ]
+                },
+                {
+                    "id": "1052621356602241145",
+                    "roles": [
+                        "MEMBER"
+                    ],
+                    "symbols": [
+                        "✅"
+                    ]
+                }
+            ]
+        },
+        "ticketSystem": {
+            "generalChannelId": "1052610722229670000",
+            "categoryId": "1052610653749252127"
+        },
+        "stickyStats": {
+            "voice_channels": [
+    
+            ]
+        }
+    }
+}

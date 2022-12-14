@@ -4,14 +4,19 @@
   "description": "Discord bot for study group",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@discordjs/voice": "^0.6.0",
+    "@koenie06/discord.js-music": "^1.2.9",
     "axios": "^0.22.0",
-    "discord.js": "^13.1.0",
+    "discord.js": "^13.3.0-dev.1635293093.8806039",
     "dotenv": "^10.0.0",
-    "mongoose": "^6.0.8"
+    "mongoose": "^6.0.8",
+    "nodemon": "^2.0.20",
+    "vegaexp": "^0.0.3",
+    "wikipedia": "^1.1.6"
   }
 }

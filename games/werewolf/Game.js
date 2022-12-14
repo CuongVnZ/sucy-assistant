@@ -31,15 +31,16 @@ class Game {
             this.isStarted = true
         }
         console.log("Werewolf started!")
-        setInterval()
+        setTimeout(() => {
+            this.gameDay++
+            this.start()
+        }, 1000 * 60 * 60 * 24)
     }
 
     end(){
         //Kick all player
         console.log("Werewolf end!")
     }
-
-
 
 }
 

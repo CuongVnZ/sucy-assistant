@@ -1,9 +1,29 @@
 require('dotenv').config(); //initialize dotenv
-const Discord = require('discord.js'); //import discord.js
 
-const client = new Discord.Client({ 
-    intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS"], 
-    partials: ["USER", "REACTION", "MESSAGE"] }); //create new client
+const Discord = require('discord.js'); //import discord.js
+const OnlineCounting = require('./Schedulers/tasks/OnlineCounting');
+
+// const client = new Discord.Client({
+//     intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS", "GUILD_MEMBERS", "GUILD_PRESENCES", "DIRECT_MESSAGES", "GUILD_VOICE_STATES"], 
+//     partials: ["USER", "REACTION", "MESSAGE"] }); //create new client
+
+const client = new Discord.Client({
+  intents: [
+    Discord.Intents.FLAGS.GUILD_VOICE_STATES,
+    Discord.Intents.FLAGS.GUILDS,
+    Discord.Intents.FLAGS.GUILD_MESSAGES,
+    Discord.Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+    Discord.Intents.FLAGS.GUILD_MEMBERS,
+    Discord.Intents.FLAGS.GUILD_PRESENCES
+  ]
+});
+
+client.tickets = [];
+client.sucy = {}
+client.sucy.devMode = true;
+
+require('./games/GameManager')(Discord, client)
+require('./guilds/GuildManager')(Discord, client)
 
 client.commands = new Discord.Collection();
 client.events = new Discord.Collection();
@@ -14,11 +34,13 @@ client.events = new Discord.Collection();
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
+  require('./schedulers/tasks/OnlineCounting')(Discord, client)
 });
 
 require('./services/mongoose');
-require('./games/GameController')(Discord, client)
 
-client.devMode = false;
+async function start(){
+  await client.login(process.env.CLIENT_TOKEN);
+}
 
-client.login(process.env.CLIENT_TOKEN);
+start()

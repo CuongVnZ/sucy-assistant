@@ -15,8 +15,12 @@ class Werewolf{
     }
 
     remove(game){
-        //remove game from games
+        this.games = this.games.filter((el) => {
+            return el != game
+        })
+        return true;
     }
+    
 }
 
 module.exports = Werewolf;
