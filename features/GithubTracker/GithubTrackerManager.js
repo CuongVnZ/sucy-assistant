@@ -1,6 +1,6 @@
 const { Octokit } = require("@octokit/rest");
 const octokit = new Octokit({
-    auth: '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'
+    auth: process.env.GITHUB_TOKEN
 });
 
 module.exports = (repository, channel) => {    

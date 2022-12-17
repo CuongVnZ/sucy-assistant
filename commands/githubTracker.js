@@ -9,5 +9,6 @@ module.exports = {
         const repository = message.content.split(' ')[1];
         const channel = message.mentions.channels.first();
         GithubTrackerManager(repository, channel)
+        message.channel.send(`Watched ${repository}!`);
     }
 }
