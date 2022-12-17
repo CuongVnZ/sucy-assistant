@@ -4,6 +4,13 @@ const octokit = new Octokit({
 });
 
 module.exports = (repository, channel) => {    
+
+    // get the initial commit history and store the latest commit
+    let latestCommit;
+    getCommitHistory(repository).then(commits => {
+        latestCommit = commits[0];
+    });
+
     // run the commit check every 60 seconds
     setInterval(async () => {
     const commits = await getCommitHistory(repository);
