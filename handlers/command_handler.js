@@ -12,16 +12,4 @@ module.exports = function (client, Discord) {
             continue;
         }
     }
-
-    // client.on('messageCreate', message =>{
-    //     if(!message.content.startsWith(prefix) || message.author.bot) return;
-        
-    //     console.log("CHAT")
-    //     const args = message.content.slice(prefix.length).split(/ +/);
-    //     const command = args.shift().toLowerCase();
-     
-    //     if(client.commands.get(command) != undefined){
-    //         client.commands.get(command).execute(message, args, Discord, client);
-    //     } 
-    // });
 }

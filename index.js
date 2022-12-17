@@ -1,41 +1,70 @@
-require('dotenv').config(); //initialize dotenv
-const db = require('./services/mongoose');
+const Discord = require('discord.js');
 
-const Discord = require('discord.js'); //import discord.js
-require('./schedulers/tasks/OnlineCounting');
+class Main {
+  constructor(Discord) {
+    this.Discord = Discord;
 
-const client = new Discord.Client({
-  intents: [
-    Discord.GatewayIntentBits.Guilds,
-    Discord.GatewayIntentBits.GuildMembers,
-    Discord.GatewayIntentBits.GuildVoiceStates,
-    Discord.GatewayIntentBits.GuildMessages,
-    Discord.GatewayIntentBits.GuildMessageReactions,
-    Discord.GatewayIntentBits.MessageContent,
-    Discord.GatewayIntentBits.GuildPresences
-  ]
-});
+    this.initDotenv();
+    this.initDb();
+    this.initClient();
+    this.initHandlers();
+    this.initReadyEvent();
+    this.initLogin();
+  }
 
-client.tickets = [];
-client.sucy = {}
-client.sucy.devMode = true;
+  initDotenv() {
+    require('dotenv').config();
+  }
 
-require('./games/GameManager')(Discord, client)
-require('./guilds/GuildManager')(Discord, client)
+  initDb() {
+    const db = require('./services/database');
+  }
 
-client.commands = new Discord.Collection();
-client.events = new Discord.Collection();
+  initClient() {
+    this.client = new this.Discord.Client({
+      intents: [
+        this.Discord.GatewayIntentBits.Guilds,
+        this.Discord.GatewayIntentBits.GuildMembers,
+        this.Discord.GatewayIntentBits.GuildVoiceStates,
+        this.Discord.GatewayIntentBits.GuildMessages,
+        this.Discord.GatewayIntentBits.GuildMessageReactions,
+        this.Discord.GatewayIntentBits.MessageContent,
+        this.Discord.GatewayIntentBits.GuildPresences
+      ]
+    });
 
-["command_handler", "event_handler"].forEach((handler) => {
-    require(`./handlers/${handler}`)(client, Discord);
-})
+    this.client.tickets = [];
+    this.client.sucy = {};
+    this.client.sucy.devMode = true;
 
-client.on('ready', () => {
-  console.log(`Logged in as ${client.user.tag}!`);
-  require('./schedulers/tasks/OnlineCounting')(Discord, client)
-});
+    require('./games/GameManager')(this.Discord, this.client);
+    require('./guilds/GuildManager')(this.Discord, this.client);
 
-async function start(){
-  await client.login(process.env.CLIENT_TOKEN);
+    this.client.commands = new this.Discord.Collection();
+    this.client.events = new this.Discord.Collection();
+  }
+
+  initHandlers() {
+    const fs = require('fs')
+    const handlerFiles = fs.readdirSync('handlers');
+    handlerFiles.forEach((file) => {
+      const handler = require(`./handlers/${file}`);
+      handler(this.client, this.Discord);
+    });
+  }
+
+  initReadyEvent() {
+    this.client.on('ready', () => {
+      console.log(`Logged in as ${this.client.user.tag}!`);
+      require('./schedulers/tasks/OnlineCounting')(this.Discord, this.client);
+    });
+  }
+
+  async initLogin() {
+    await this.client.login(process.env.CLIENT_TOKEN);
+  }
 }
-start()
+
+
+const main = new Main(Discord);
+main.initLogin();

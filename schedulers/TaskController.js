@@ -1,4 +1,8 @@
+const OnlineCounting = require('./tasks/OnlineCounting');
 
 module.exports = (Discord, client) => {
-    //setup task
+    //setup other tasks
+
+    //add OnlineCounting task
+    OnlineCounting(Discord, client);
 }
