@@ -6,7 +6,7 @@ module.exports = (Discord, client) => {
 }
 
 function run(Discord, client){
-    console.log('Changing...')
+    console.log('[INFO] Updating task...')
 
     try {
         const guilds = client.guilds.cache;
@@ -34,5 +34,5 @@ function run(Discord, client){
             
     }
 
-    console.log('Done')
+    console.log('[INFO] Done')
 }
