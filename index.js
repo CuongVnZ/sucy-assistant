@@ -2,7 +2,7 @@ require('dotenv').config(); //initialize dotenv
 const db = require('./services/mongoose');
 
 const Discord = require('discord.js'); //import discord.js
-const OnlineCounting = require('./Schedulers/tasks/OnlineCounting');
+require('./Schedulers/tasks/OnlineCounting');
 
 const client = new Discord.Client({
   intents: [
