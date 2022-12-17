@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "@koenie06/discord.js-music": "^1.3.0",
+    "@octokit/rest": "^19.0.5",
     "axios": "^1.2.1",
     "discord.js": "^14.7.1",
     "dotenv": "^16.0.3",
