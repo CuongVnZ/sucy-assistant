@@ -27,7 +27,7 @@ module.exports = (repository, channel) => {
 
 // get the commit history for the repository
 async function getCommitHistory(repository) {
-    const commits = await octokit.repos.listCommits({
+    const commits = await octokit.rest.repos.listCommits({
         owner: "CuongVnZ",
         repo: repository
     });
