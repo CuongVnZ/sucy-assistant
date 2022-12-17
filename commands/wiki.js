@@ -17,18 +17,17 @@ module.exports = {
                 return;
             }
             // console.log(result);
-            let embed = new Discord.MessageEmbed()
+            let embed = new Discord.EmbedBuilder()
                 .setTitle(result.title)
                 .setURL(result.content_urls.desktop.page)
                 .setDescription(result.extract)
                 .setColor("#0099ff")
-                .setFooter("Powered by Wikipedia")
+                .setFooter({ text: "Powered by Wikipedia", iconURL: 'https://en.wikipedia.org/static/images/project-logos/enwiki-1.5x.png' })
                 .setTimestamp();
             if(result.thumbnail){
                 embed.setThumbnail(result.thumbnail.source);
             }
             message.channel.send({ embeds: [embed] });
-            //message.channel.send(result);
         } catch (error) {  
             console.log(error);
             message.channel.send("Wiki not found");

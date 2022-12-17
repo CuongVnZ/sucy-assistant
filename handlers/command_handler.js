@@ -15,7 +15,8 @@ module.exports = function (client, Discord) {
 
     // client.on('messageCreate', message =>{
     //     if(!message.content.startsWith(prefix) || message.author.bot) return;
-     
+        
+    //     console.log("CHAT")
     //     const args = message.content.slice(prefix.length).split(/ +/);
     //     const command = args.shift().toLowerCase();
      
