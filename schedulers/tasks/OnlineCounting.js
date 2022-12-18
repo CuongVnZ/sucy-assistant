@@ -1,12 +1,12 @@
 const Task = require('../Task.js');
 
 module.exports = (Discord, client) => {
-    task = new Task(Discord, client)
+    let task = new Task(Discord, client)
     setInterval(run, 60000, Discord, client)
 }
 
 function run(Discord, client){
-    console.log('[INFO] Updating task...')
+    console.log('[INFO] Updating status channel...')
 
     try {
         const guilds = client.guilds.cache;

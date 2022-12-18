@@ -42,6 +42,13 @@ class Main {
 
     this.client.commands = new this.Discord.Collection();
     this.client.events = new this.Discord.Collection();
+
+    const { Player } = require("@jadestudios/discord-music-player");
+    const player = new Player(this.client, {
+        leaveOnEmpty: false, // This options are optional.
+    });
+    // You can define the Player as *client.player* to easily access it.
+    this.client.player = player;
   }
 
   initHandlers() {
@@ -56,7 +63,7 @@ class Main {
   initReadyEvent() {
     this.client.on('ready', () => {
       console.log(`Logged in as ${this.client.user.tag}!`);
-      require('./schedulers/tasks/OnlineCounting')(this.Discord, this.client);
+      require('./schedulers/TaskController')(this.Discord, this.client);
     });
   }
 
