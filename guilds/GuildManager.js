@@ -1,5 +1,7 @@
 const Guild = require('./Guild')
 var fs = require('fs')
+const mongoose = require('mongoose');
+const GuidSchema = require('./schemas/guildSchem');
 
 module.exports = (Discord, client) => {
     client.sucy.guilds = [];
@@ -14,6 +16,7 @@ module.exports = (Discord, client) => {
                 var guild = new Guild();
                 guild = loadGuildFromJson(guild, json);
                 client.sucy.guilds.push(guild);
+                // saveGuild(guild);
                 console.log("[INFO] Loaded " + guild.name + " from disk.");
             });
         })
@@ -72,4 +75,28 @@ function readFile(path){
     });
 }
 
+function saveGuild(guild) {
+    // Create a model from the schema
+    const Guid = mongoose.model('guilds', GuidSchema);
+
+    // Create a new document from the model
+    const newGuild = new Guid({
+        name: guild.name,
+        id: guild.id,
+        prefix: guild.prefix,
+        features: guild.features
+    });
+
+    // Save the document to the database
+    newGuild.save((error) => {
+    if (error) {
+        console.error(`Error saving guild to database: ${error}`);
+    } else {
+        console.log(`[INFO] Successfully saved guild ${guild.name} to database.`);
+    }
+    });
+}
+  
+
 module.exports.getGuild = getGuild;
+module.exports.saveGuild = saveGuild;

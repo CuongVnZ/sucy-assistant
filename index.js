@@ -1,77 +1,76 @@
 const Discord = require('discord.js');
+const mongoose = require('mongoose');
+require('dotenv').config();
 
-class Main {
-  constructor(Discord) {
-    this.Discord = Discord;
-
-    this.initDotenv();
-    this.initDb();
-    this.initClient();
-    this.initHandlers();
-    this.initReadyEvent();
-    this.initLogin();
-  }
-
-  initDotenv() {
-    require('dotenv').config();
-  }
-
-  initDb() {
-    const db = require('./services/database');
-  }
-
-  initClient() {
-    this.client = new this.Discord.Client({
-      intents: [
-        this.Discord.GatewayIntentBits.Guilds,
-        this.Discord.GatewayIntentBits.GuildMembers,
-        this.Discord.GatewayIntentBits.GuildVoiceStates,
-        this.Discord.GatewayIntentBits.GuildMessages,
-        this.Discord.GatewayIntentBits.GuildMessageReactions,
-        this.Discord.GatewayIntentBits.MessageContent,
-        this.Discord.GatewayIntentBits.GuildPresences
-      ]
-    });
-
-    this.client.tickets = [];
-    this.client.sucy = {};
-    this.client.sucy.devMode = true;
-
-    require('./games/GameManager')(this.Discord, this.client);
-    require('./guilds/GuildManager')(this.Discord, this.client);
-
-    this.client.commands = new this.Discord.Collection();
-    this.client.events = new this.Discord.Collection();
-
-    const { Player } = require("@jadestudios/discord-music-player");
-    const player = new Player(this.client, {
-        leaveOnEmpty: false, // This options are optional.
-    });
-    // You can define the Player as *client.player* to easily access it.
-    this.client.player = player;
-  }
-
-  initHandlers() {
-    const fs = require('fs')
-    const handlerFiles = fs.readdirSync('handlers');
-    handlerFiles.forEach((file) => {
-      const handler = require(`./handlers/${file}`);
-      handler(this.client, this.Discord);
-    });
-  }
-
-  initReadyEvent() {
-    this.client.on('ready', () => {
-      console.log(`Logged in as ${this.client.user.tag}!`);
-      require('./schedulers/TaskController')(this.Discord, this.client);
-    });
-  }
-
-  async initLogin() {
-    await this.client.login(process.env.CLIENT_TOKEN);
-  }
+async function initDb() {
+  mongoose.set('strictQuery', true);
+  await mongoose.connect(process.env.MONGODB_SRV, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  }).then(() => {
+    console.log("[Info] Connected to the database!");
+  });
 }
 
+function initClient() {
+  const client = new Discord.Client({
+    intents: [
+      Discord.GatewayIntentBits.Guilds,
+      Discord.GatewayIntentBits.GuildMembers,
+      Discord.GatewayIntentBits.GuildVoiceStates,
+      Discord.GatewayIntentBits.GuildMessages,
+      Discord.GatewayIntentBits.GuildMessageReactions,
+      Discord.GatewayIntentBits.MessageContent,
+      Discord.GatewayIntentBits.GuildPresences
+    ]
+  });
 
-const main = new Main(Discord);
-main.initLogin();
+  client.tickets = [];
+  client.sucy = {};
+  client.sucy.devMode = true;
+
+  require('./games/GameManager')(Discord, client);
+  require('./guilds/GuildManager')(Discord, client);
+
+  client.commands = new Discord.Collection();
+  client.events = new Discord.Collection();
+
+  const { Player } = require("@jadestudios/discord-music-player");
+  const player = new Player(client, {
+      leaveOnEmpty: false, // This options are optional.
+  });
+  // You can define the Player as *client.player* to easily access it.
+  client.player = player;
+
+  return client;
+}
+
+function initHandlers(client, Discord) {
+  const fs = require('fs')
+  const handlerFiles = fs.readdirSync('handlers');
+  handlerFiles.forEach((file) => {
+    const handler = require(`./handlers/${file}`);
+    handler(client, Discord);
+  });
+}
+
+function initReadyEvent(client) {
+  client.on('ready', () => {
+    console.log(`[INFO] Logged in as ${client.user.tag}!`);
+    require('./schedulers/TaskController')(Discord, client);
+  });
+}
+
+async function initLogin(client) {
+  await client.login(process.env.CLIENT_TOKEN);
+}
+
+async function main() {
+  await initDb();
+  const client = initClient();
+  initHandlers(client, Discord);
+  initReadyEvent(client);
+  await initLogin(client);
+}
+
+main();

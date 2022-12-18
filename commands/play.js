@@ -57,11 +57,32 @@ module.exports = {
         }
 
         else if(['stop'].find(x => x === cmd)) {
+            let voiceChannel = message.member.voice.channel;
+            if(!voiceChannel) return message.channel.send('You need to be in a voice channel to play music.');
 
+            if(!guildQueue)
+                return message.channel.send('There is no song that I could stop.');
+
+            guildQueue.stop();
         }
 
         else if(['queue'].find(x => x === cmd)) {
-            
+            let voiceChannel = message.member.voice.channel;
+            if(!voiceChannel) return message.channel.send('You need to be in a voice channel to play music.');
+
+            if(!guildQueue)
+                return message.channel.send('There is no song in queue.');
+
+            let queue = guildQueue.songs.map((song, i) => {
+                return `${i === 0 ? 'Now Playing' : `#${i+1}`} - ${song.name}`;
+            }).join('\n');
+
+            response = new EmbedBuilder()
+                .setTitle('Server Queue')
+                .setDescription(queue)
+                .setColor('#FF0000')
+                .setTimestamp()
+            message.channel.send({ embeds: [response] });
         }
     }
     

@@ -33,8 +33,19 @@
         },
         "stickyStats": {
             "voice_channels": [
-    
+                {
+                    "id": "1052610722229670000",
+                    "text": "Voice Channels"
+                },
+                {
+                    "id": "1052610722229670000",
+                    "text": "Voice Channels"
+                }
             ]
+        },
+        "newsNotice": {
+            "lastArticleId": "Final Fantasy Pixel Remaster Collection Launches On Switch Spring 2023 - Nintendo Life",
+            "channelId": "1053990394565775370"
         }
     }
 }

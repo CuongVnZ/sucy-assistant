@@ -1,4 +1,4 @@
-const NewsNotify = require('./tasks/NewsNotify');
+const NewsNotice = require('./tasks/NewsNotice');
 const OnlineCounting = require('./tasks/OnlineCounting');
 
 module.exports = (Discord, client) => {
@@ -6,5 +6,5 @@ module.exports = (Discord, client) => {
 
     //add OnlineCounting task
     OnlineCounting(Discord, client);
-    NewsNotify(Discord, client);
+    NewsNotice(Discord, client);
 }
