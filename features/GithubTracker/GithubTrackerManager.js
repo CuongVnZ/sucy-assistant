@@ -9,6 +9,7 @@ module.exports = (repository, channel) => {
     let latestCommit;
     getCommitHistory(repository).then(commits => {
         latestCommit = commits[0];
+        console.log(latestCommit)
     });
 
     // run the commit check every 60 seconds
@@ -28,7 +29,7 @@ module.exports = (repository, channel) => {
 // get the commit history for the repository
 async function getCommitHistory(repository) {
     const commits = await octokit.rest.repos.listCommits({
-        owner: "CuongVnZ",
+        owner: "cuongvnz",
         repo: repository
     });
     return commits;

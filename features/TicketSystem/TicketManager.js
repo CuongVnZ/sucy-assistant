@@ -1,32 +1,44 @@
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder, ChannelType, PermissionsBitField } = require('discord.js');
 const GuildManager = require('../../guilds/GuildManager');
 const Ticket = require('./Ticket');
 
-var TICKET_CATEGORY = '894221933497962496'
-var GENERAL_CHANNEL_ID = '895025719254581248' //'891536512934608940' 
-
 async function createTicket(message, args, Discord, client){
-    TICKET_CATEGORY = GuildManager.getGuild(message.guild.id, Discord, client).features.ticketSystem.categoryId;
-    GENERAL_CHANNEL_ID = GuildManager.getGuild(message.guild.id, Discord, client).features.ticketSystem.generalChannelId;
+    const currentGuild = GuildManager.getGuild(message.guild.id, Discord, client);
+
+    const TICKET_CATEGORY = currentGuild.features.ticketSystem.categoryId;
+    const GENERAL_CHANNEL_ID = currentGuild.features.ticketSystem.generalChannelId;
+    var generalChannel = client.channels.cache.get(GENERAL_CHANNEL_ID)
 
     const ticketName = `ticket : ${message.author.tag}`
-    const channel = await message.guild.channels.create(ticketName);
-    channel.setParent(TICKET_CATEGORY);
-
-    channel.permissionOverwrites.create(message.guild.id, {
-        SEND_MESSAGES: false,
-        VIEW_CHANNEL: false,
+    const channel = await message.guild.channels.create({
+        name: ticketName,
+        type: ChannelType.GuildText,
+        parent: TICKET_CATEGORY,
+        permissionOverwrites: [
+            {
+                id: message.guild.id,
+                deny: [PermissionsBitField.Flags.ViewChannel],
+            },
+            {
+                id: message.author.id,
+                allow: [PermissionsBitField.Flags.ViewChannel],
+            },
+        ],
     });
-    channel.permissionOverwrites.create(message.author, {
-        SEND_MESSAGES: true,
-        VIEW_CHANNEL: true,
-    })
 
-    //const reactionMesssage = await channel.send('**Bạn đã tạo một câu hỏi!** \n\n Vui lòng gửi nội dung câu hỏi và đợi mọi người trả lời :3')
-    let embed = new MessageEmbed()
+    // channel.permissionOverwrites.create(message.guild.id, {
+    //     SEND_MESSAGES: false,
+    //     VIEW_CHANNEL: false,
+    // });
+    // channel.permissionOverwrites.create(message.author, {
+    //     SEND_MESSAGES: true,
+    //     VIEW_CHANNEL: true,
+    // })
+
+    let embed = new EmbedBuilder()
     .setColor('#5AC0DE')
-    .setTitle('**Bạn đã tạo một câu hỏi!**')
-    .setDescription(`\nVui lòng gửi nội dung câu hỏi và đợi mọi người trả lời :3`);
+    .setTitle('**You have created a ticket!**')
+    .setDescription(`\nPlease ask your question and wait for members to help you!`);
         
     let reactionMesssage = await channel.send({ embeds: [embed] })
     
@@ -42,7 +54,8 @@ async function createTicket(message, args, Discord, client){
     if(args.length > 0){
         title = args.join(" ");
     }
-    var messageGlobal = await sendGlobal(Discord, client, message.author, title, channel.id);
+
+    var messageGeneral = await sendGeneral(generalChannel, client, message.author, title, channel.id);
     await sleep(1000);
 
     const collector = reactionMesssage.createReactionCollector(
@@ -62,17 +75,17 @@ async function createTicket(message, args, Discord, client){
             channel.permissionOverwrites.create(message.author, { SEND_MESSAGES: false });
             break;
             case "⛔":
-            channel.send("Kênh này sẽ bị xóa sau 5 giây!");
+            channel.send("This channel will be deleted after 5 seconds!");
             setTimeout(() => {
                 channel.delete();
-                messageGlobal.delete();
+                messageGeneral.delete();
             }, 5000);
             break;
         }
     });
   
     message.channel
-        .send(`Bạn đã tạo một câu hỏi! ${channel}`)
+        .send(`You have created a ticket: ${channel}`)
         .then((msg) => {
         setTimeout(async () => {
             await msg.delete()
@@ -85,36 +98,34 @@ async function createTicket(message, args, Discord, client){
         throw err;
         });
     
-    var ticket = new Ticket(ticketName, message.author, channel.id, messageGlobal, message.guild);
+    var ticket = new Ticket(ticketName, message.author, channel.id, messageGeneral, message.guild);
     client.tickets.push(ticket);
     
     console.log("[INFO]", message.author.username, "has created a ticket", ticketName)
 }
 
-async function sendGlobal(Discord, client, user, title, ticketChannelId){
-    let channel = client.channels.cache.get(GENERAL_CHANNEL_ID)
-
+async function sendGeneral(generalChannel, client, user, title, ticketChannelId){
     const ICON = '✅'
-    let embed = new MessageEmbed()
+    let embed = new EmbedBuilder()
     .setColor('#5AC0DE')
-    .setTitle(user.username + ' đã đăng một câu hỏi với tiêu đề ' + '`' + title + '`')
-    .setDescription(`Tham gia trả lời bằng cách nhấn vào react bên dưới\n
+    .setTitle(user.username + ' has asked a question with title ' + '`' + title + '`')
+    .setDescription(`Help ${user.username} by react to the icon below\n
         
-        ${ICON} : THAM GIA TRẢ LỜI\n\n
+        ${ICON} : TO JOIN THE CHANNEL\n\n
         <@everyone>`);
 
-    let messageEmbed = await channel.send({ embeds: [embed] })
+    let messageEmbed = await generalChannel.send({ embeds: [embed] })
     .then(message => {
         message.react(ICON)
         return message;
     })
     .catch(console.error);
 
-    confirmJoinEvent(Discord, client, messageEmbed.id, ticketChannelId)
+    confirmJoinEvent(client, messageEmbed.id, ticketChannelId)
     return messageEmbed;
 }
 
-async function confirmJoinEvent(Discord, client, messageId, ticketId){
+async function confirmJoinEvent(client, messageId, ticketId){
     client.on('messageReactionAdd', async (reaction, user) => {
         try { 
             let ticketChannel = client.channels.cache.get(ticketId)
@@ -129,12 +140,14 @@ async function confirmJoinEvent(Discord, client, messageId, ticketId){
                 if (reaction.emoji.name === '✅') {
                     var member = await message.guild.members.cache.get(user.id);
     
-                    await ticketChannel.permissionOverwrites.create(member, {
-                        SEND_MESSAGES: true,
-                        VIEW_CHANNEL: true,
-                    })
+                    await ticketChannel.permissionOverwrites.set([
+                        {
+                            id: member.id,
+                            allow: [PermissionsBitField.Flags.ViewChannel],
+                        }
+                    ])
     
-                    await ticketChannel.send(`<@${user.id}>` + ' đã tham gia!')
+                    await ticketChannel.send(`<@${user.id}>` + ' has joined!')
     
                     console.log("[INFO] Added", user.username, "for ticket ", ticketId)
                 }
@@ -152,6 +165,3 @@ function sleep(ms) {
 }
 
 module.exports.createTicket = createTicket;
-module.exports.confirmJoinEvent = confirmJoinEvent;
-module.exports.sendGlobal = sendGlobal;
-module.exports.sleep = sleep;

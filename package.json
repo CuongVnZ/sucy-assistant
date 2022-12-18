@@ -16,7 +16,6 @@
     "dotenv": "^16.0.3",
     "mongoose": "^6.0.8",
     "nodemon": "^2.0.20",
-    "vegaexp": "^0.0.3",
     "wikipedia": "^1.1.6"
   }
 }

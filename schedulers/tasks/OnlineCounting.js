@@ -19,6 +19,8 @@ function run(Discord, client){
                 return !member.user.bot && member.presence.status != "offline"
             })
 
+            const channels = []
+
             const totalUsers = await client.channels.cache.get('899750985654751313');
             const onlineUsers = await client.channels.cache.get('1052612155314282506');
             const thptCount = await client.channels.cache.get('899597397087358987');
