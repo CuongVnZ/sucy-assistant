@@ -40,7 +40,7 @@ function run(Discord, client){
                     channel.send({embeds: [embed]});
             
                     // Update the last article ID
-                    guild.features.NewsNotice.lastArticleId = article.title;
+                    guild.features.newsNotice.lastArticleId = article.title;
                 }
             });
             
