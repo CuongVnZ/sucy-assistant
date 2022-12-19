@@ -1,7 +1,5 @@
-const Task = require('../Task.js');
-
 module.exports = (Discord, client) => {
-    let task = new Task(Discord, client)
+    run(Discord, client)
     setInterval(run, 60000, Discord, client)
 }
 
@@ -11,29 +9,34 @@ function run(Discord, client){
     try {
         const guilds = client.guilds.cache;
         online = 0
-        //totalUsers = guild.members.size
         guilds.forEach(async (guild) => {//891536512934608937
-            let guildMembers = await guild.members.fetch({ withPresences: true })
-            var onlineMembers = await guildMembers.filter(member => {
-                if(member.presence == null) return
-                return !member.user.bot && member.presence.status != "offline"
-            })
+            let guildConfigs = await client.sucy.guilds
+            for (var guildConfig of guildConfigs) {
+                if (guildConfig.id == guild.id) {
 
-            const channels = []
+                    let guildMembers = await guild.members.fetch({ withPresences: true })
+                    var onlineMembers = await guildMembers.filter(member => {
+                        if(member.presence == null) return
+                        return !member.user.bot && member.presence.status != "offline"
+                    })
 
-            const totalUsers = await client.channels.cache.get('899750985654751313');
-            const onlineUsers = await client.channels.cache.get('1052612155314282506');
-            const thptCount = await client.channels.cache.get('899597397087358987');
+                    const channels = []
 
-            date = new Date("2022/06/07")
-            days = Math.round((date-Date.now())/(60*60*24*1000))
+                    const totalUsers = await client.channels.cache.get('899750985654751313');
+                    const onlineUsers = await client.channels.cache.get('1052612155314282506');
+                    const thptCount = await client.channels.cache.get('899597397087358987');
 
-            await onlineUsers.setName("Online: " + onlineMembers.size)
-            await totalUsers.setName("Total users: " + guild.memberCount)
-            await thptCount.setName("THPT QG: " + days + " ngày")
+                    date = new Date("2022/06/07")
+                    days = Math.round((date-Date.now())/(60*60*24*1000))
+
+                    await onlineUsers.setName("Online: " + onlineMembers.size)
+                    await totalUsers.setName("Total users: " + guild.memberCount)
+                    await thptCount.setName("THPT QG: " + days + " ngày")
+                }
+            }
         });
     } catch (error) {
-            
+            console.log(error)
     }
 
     console.log('[INFO] Done')

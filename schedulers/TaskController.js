@@ -6,5 +6,5 @@ module.exports = (Discord, client) => {
 
     //add OnlineCounting task
     OnlineCounting(Discord, client);
-    NewsNotice(Discord, client);
+    // NewsNotice(Discord, client);
 }

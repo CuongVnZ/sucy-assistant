@@ -1,11 +1,8 @@
-const Task = require('../Task.js');
-
 const NewsAPI = require('newsapi');
 
 const newsapi = new NewsAPI('c678e618580f4cb8b888dd09911f56a4');
 
 module.exports = (Discord, client) => {
-    let task = new Task(Discord, client)
     run(Discord, client)
     setInterval(run, 10000, Discord, client)
 }
