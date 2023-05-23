@@ -1,7 +1,5 @@
 module.exports = (Discord, client) => {
     //console.log(client.sucy.guilds, "1")
-    this.client = client;
-
     client.on('messageReactionAdd', async (reaction, user) => {
         try {
             var guildConfig = getGuildConfig(reaction.message.guild, client);

@@ -1,9 +1,9 @@
-module.exports = (Discord, client) => {
-    run(Discord, client)
-    setInterval(run, 60000, Discord, client)
+module.exports = (client) => {
+    run(client)
+    setInterval(run, 60000, client)
 }
 
-function run(Discord, client){
+function run(client){
     console.log('[INFO] Updating status channel...')
 
     try {

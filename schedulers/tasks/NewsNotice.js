@@ -1,13 +1,14 @@
 const NewsAPI = require('newsapi');
+const Discord = require('discord.js');
 
 const newsapi = new NewsAPI('c678e618580f4cb8b888dd09911f56a4');
 
-module.exports = (Discord, client) => {
-    run(Discord, client)
-    setInterval(run, 10000, Discord, client)
+module.exports = (client) => {
+    run(client)
+    setInterval(run, 10000, client)
 }
 
-function run(Discord, client){
+function run(client){
     console.log('[INFO] Checking for new articles...')
     for (var guild of client.sucy.guilds) {
         var lastArticleId = guild.features.newsNotice.lastArticleId;

@@ -2,8 +2,8 @@ const { EmbedBuilder, ChannelType, PermissionsBitField } = require('discord.js')
 const GuildManager = require('../../guilds/GuildManager');
 const Ticket = require('./Ticket');
 
-async function createTicket(message, args, Discord, client){
-    const currentGuild = GuildManager.getGuild(message.guild.id, Discord, client);
+async function createTicket(message, args, client){
+    const currentGuild = GuildManager.getGuild(message.guild.id, client);
 
     const TICKET_CATEGORY = currentGuild.features.ticketSystem.categoryId;
     const GENERAL_CHANNEL_ID = currentGuild.features.ticketSystem.generalChannelId;

@@ -3,7 +3,7 @@ var fs = require('fs')
 const mongoose = require('mongoose');
 const GuidSchema = require('./schemas/guildSchem');
 
-module.exports = (Discord, client) => {
+module.exports = (client) => {
     client.sucy.guilds = [];
 
     var dir = "./guilds/__data";

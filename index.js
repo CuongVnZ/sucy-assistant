@@ -4,6 +4,7 @@ require('dotenv').config();
 
 async function initDb() {
   mongoose.set('strictQuery', true);
+  console.log(process.env.MONGODB_SRV);
   await mongoose.connect(process.env.MONGODB_SRV, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -29,12 +30,13 @@ function initClient() {
   client.sucy = {};
   client.sucy.devMode = true;
 
-  require('./games/GameManager')(Discord, client);
-  require('./guilds/GuildManager')(Discord, client);
-
   client.commands = new Discord.Collection();
   client.events = new Discord.Collection();
 
+  // require('./games/GameManager')(Discord, client);
+  require('./guilds/GuildManager')(client);
+
+  // Music Player
   const { Player } = require("@jadestudios/discord-music-player");
   const player = new Player(client, {
       leaveOnEmpty: false, // This options are optional.
@@ -45,7 +47,7 @@ function initClient() {
   return client;
 }
 
-function initHandlers(client, Discord) {
+function initHandlers(client) {
   const fs = require('fs')
   const handlerFiles = fs.readdirSync('handlers');
   handlerFiles.forEach((file) => {
@@ -57,12 +59,8 @@ function initHandlers(client, Discord) {
 function initReadyEvent(client) {
   client.on('ready', () => {
     console.log(`[INFO] Logged in as ${client.user.tag}!`);
-    require('./schedulers/TaskController')(Discord, client);
+    require('./schedulers/TaskController')(client);
   });
-}
-
-async function initLogin(client) {
-  await client.login(process.env.CLIENT_TOKEN);
 }
 
 async function main() {
@@ -70,7 +68,7 @@ async function main() {
   const client = initClient();
   initHandlers(client, Discord);
   initReadyEvent(client);
-  await initLogin(client);
+  await client.login(process.env.CLIENT_TOKEN);
 }
 
 main();
