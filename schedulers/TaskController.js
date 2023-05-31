@@ -1,10 +1,8 @@
 const NewsNotice = require('./tasks/NewsNotice');
-const OnlineCounting = require('./tasks/OnlineCounting');
+const OnlineStatus = require('./tasks/OnlineStatus');
 
 module.exports = (Discord, client) => {
-    //setup other tasks
-
-    //add OnlineCounting task
-    OnlineCounting(Discord, client);
+    //setup tasks
+    OnlineStatus(Discord, client);
     // NewsNotice(Discord, client);
 }

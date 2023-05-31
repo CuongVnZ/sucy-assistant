@@ -30,11 +30,6 @@ function loadGuildFromJson(guild, json) {
     guild.features = json.features;
 
     return guild;
-    // guild.logChannel = json.logChannel;
-    // guild.logChannelID = json.logChannelID;
-    // guild.logChannelName = json.logChannelName;
-    // guild.logChannelType = json.logChannelType;
-    // guild.logChannelTopic = json.logChannelTopic;
 }
 
 function getGuild(id, Discord, client) {
