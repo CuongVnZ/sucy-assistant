@@ -24,7 +24,7 @@ const responses = [
 
 module.exports = {
     name: '8ball',
-    description: "This is an 8-ball command that allows you to ask a question and receive a random answer from a predefined list of responses. The 8-ball is often used to provide guidance or make decisions when faced with uncertainty.",
+    description: "This command allows you to ask a question and receive a random answer from a predefined list of responses.",
     execute(message, args, Discord, client){
     // Get the question from the message
     const question = args.join(" ");

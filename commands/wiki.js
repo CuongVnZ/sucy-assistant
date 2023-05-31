@@ -2,7 +2,7 @@ const wiki = require('wikipedia');
 
 module.exports = {
     name: "wiki",
-    description: "Displays wiki commands",
+    description: "This command displays a list of wiki commands, which are functions related to a knowledge base or encyclopedia.",
     async execute(message, args, Discord, client){
         var query = args.join(" ");
         if(query == ""){

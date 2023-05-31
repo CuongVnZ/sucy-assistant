@@ -5,7 +5,7 @@ module.exports = {
     name: 'play',
     aliases: ['p', 'skip', 'stop', 'queue'], //We are using aliases to run the skip and stop command follow this tutorial if lost: https://www.youtube.com/watch?v=QBUJ3cdofqc
     cooldown: 0,
-    description: 'Advanced music bot',
+    description: 'This is a music bot command that allows you to play music on the Discord server.',
     async execute(message, args, Discord, client, cmd){
         let guildQueue = client.player.getQueue(message.guild.id);
         if (['play', 'p'].find(x => x === cmd)) {

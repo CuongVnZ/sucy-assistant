@@ -1,6 +1,6 @@
 module.exports = {
     name: "help",
-    description: "Displays all commands",
+    description: "This command displays a list of all available commands for the bot.",
     execute(message, args, Discord, client) {
         const embed = new Discord.EmbedBuilder()
             .setTitle("Help")

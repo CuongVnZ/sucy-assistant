@@ -2,7 +2,7 @@ const axios = require('axios'); // Require the 'axios' package to make API reque
 
 module.exports = {
     name: 'meme',
-    description: "This is a meme command!",
+    description: "This command generates or displays a meme.",
     execute(message, args, Discord, client){
         // Send a request to the Reddit API to get a random meme from the 'dankmemes' subreddit
         axios.get('https://www.reddit.com/r/dankmemes/random.json')
