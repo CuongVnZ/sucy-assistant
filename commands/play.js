@@ -20,7 +20,7 @@ export default {
                 if(!guildQueue)
                     queue.stop();
             });
-            response = new EmbedBuilder()
+            const response = new EmbedBuilder()
                 .setTitle('Now Playing')
                 .setDescription(`[${song.name}](${song.url})`)
                 .setThumbnail(song.thumbnail)
