@@ -12,6 +12,7 @@
   "dependencies": {
     "@rafateoli/discord-music-player": "^9.2.1",
     "axios": "^1.2.1",
+    "chatgpt": "^5.2.5",
     "discord.js": "^14.13.0",
     "dotenv": "^16.0.3",
     "mongoose": "^6.0.8",
