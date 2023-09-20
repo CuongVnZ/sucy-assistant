@@ -37,9 +37,9 @@ function initClient() {
   require('./guilds/GuildManager')(client);
 
   // Music Player
-  const { Player } = require("@jadestudios/discord-music-player");
+  const { Player } = require("@rafateoli/discord-music-player");
   const player = new Player(client, {
-      leaveOnEmpty: false, // This options are optional.
+      leaveOnEmpty: true, // This options are optional.
   });
   // You can define the Player as *client.player* to easily access it.
   client.player = player;

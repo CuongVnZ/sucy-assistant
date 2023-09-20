@@ -1,4 +1,4 @@
-const { RepeatMode } = require('@jadestudios/discord-music-player');
+const { RepeatMode } = require('@rafateoli/discord-music-player');
 const { EmbedBuilder } = require('discord.js');
 
 module.exports = {
