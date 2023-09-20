@@ -1,4 +1,4 @@
-module.exports = (client) => {
+export default (client) => {
     run(client)
     setInterval(run, 60000, client)
 }
@@ -8,7 +8,7 @@ function run(client){
 
     try {
         const guilds = client.guilds.cache;
-        online = 0
+        var online = 0
         guilds.forEach(async (guild) => {//891536512934608937
             let guildConfigs = await client.sucy.guilds
             for (var guildConfig of guildConfigs) {

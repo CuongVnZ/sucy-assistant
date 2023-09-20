@@ -22,25 +22,25 @@ const responses = [
     "Very doubtful."
   ];
 
-module.exports = {
-    name: '8ball',
-    description: "This command allows you to ask a question and receive a random answer from a predefined list of responses.",
-    execute(message, args, Discord, client){
-    // Get the question from the message
-    const question = args.join(" ");
-    
-    if (!question) return message.channel.send("Please ask a question.");
+export default {
+  name: '8ball',
+  description: "This command allows you to ask a question and receive a random answer from a predefined list of responses.",
+  execute(message, args, Discord, client){
+  // Get the question from the message
+  const question = args.join(" ");
+  
+  if (!question) return message.channel.send("Please ask a question.");
 
-    // Use the Discord.js RichEmbed constructor to create a new embed
-    const embed = new Discord.EmbedBuilder()
-      // Set the title to the question
-      .setTitle(`Question: ${question}`)
-      // Set the color to a random color
-      .setColor(Math.floor(Math.random() * 16777215))
-      // Set the description to a random response from the responses array
-      .setDescription(responses[Math.floor(Math.random() * responses.length)]);
+  // Use the Discord.js RichEmbed constructor to create a new embed
+  const embed = new Discord.EmbedBuilder()
+    // Set the title to the question
+    .setTitle(`Question: ${question}`)
+    // Set the color to a random color
+    .setColor(Math.floor(Math.random() * 16777215))
+    // Set the description to a random response from the responses array
+    .setDescription(responses[Math.floor(Math.random() * responses.length)]);
 
-    // Send the embed to the same channel as the original message
-    message.channel.send({ embeds: [embed] });
-    }
+  // Send the embed to the same channel as the original message
+  message.channel.send({ embeds: [embed] });
+  }
 }

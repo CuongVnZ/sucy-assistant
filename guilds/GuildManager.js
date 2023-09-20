@@ -1,16 +1,16 @@
-const Guild = require('./Guild')
-var fs = require('fs')
-const mongoose = require('mongoose');
-const GuidSchema = require('./schemas/guildSchem');
+import Guild from './Guild.js';
+import fs from 'fs';
+import mongoose from 'mongoose';
+import GuildSchema from './schemas/GuildSchema.js';
 
-module.exports = (client) => {
+export default (client) => {
     client.sucy.guilds = [];
 
     var dir = "./guilds/__data";
     readDir(dir)
     .then(function(files){
         files.forEach(file => {
-            path = dir + "/" + file;
+            const path = dir + "/" + file;
             readFile(path)
             .then(json => {
                 var guild = new Guild();
@@ -72,7 +72,7 @@ function readFile(path){
 
 function saveGuild(guild) {
     // Create a model from the schema
-    const Guid = mongoose.model('guilds', GuidSchema);
+    const Guid = mongoose.model('guilds', GuildSchema);
 
     // Create a new document from the model
     const newGuild = new Guid({
@@ -92,6 +92,4 @@ function saveGuild(guild) {
     });
 }
   
-
-module.exports.getGuild = getGuild;
-module.exports.saveGuild = saveGuild;
+export { getGuild, saveGuild };

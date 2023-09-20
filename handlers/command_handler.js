@@ -1,15 +1,16 @@
-const fs = require('fs');
-const prefix = '-';
-module.exports = function (client, Discord) {
+import fs from 'fs';
 
-    const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
+export default async function handler(client, Discord) {
+  const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
 
-    for(const file of commandFiles){
-        const command = require(`../commands/${file}`);
-        if(command.name){
-            client.commands.set(command.name, command);
-        } else {
-            continue;
-        }
+  for (const file of commandFiles) {
+    const module = await import(`../commands/${file}`);
+    const command = module.default;
+    if (command.name) {
+      console.log(`[INFO] Loaded command ${command.name}`)
+      client.commands.set(command.name, command);
+    } else {
+      continue;
     }
+  }
 }

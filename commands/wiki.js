@@ -1,6 +1,7 @@
-const wiki = require('wikipedia');
+// const wiki = require('wikipedia');
+import wiki from 'wikipedia';
 
-module.exports = {
+export default {
     name: "wiki",
     description: "This command displays a list of wiki commands, which are functions related to a knowledge base or encyclopedia.",
     async execute(message, args, Discord, client){

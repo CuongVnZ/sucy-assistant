@@ -1,6 +1,13 @@
-const Discord = require('discord.js');
-const mongoose = require('mongoose');
-require('dotenv').config();
+import Discord from 'discord.js';
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+dotenv.config();
+
+import GuildManager from './guilds/GuildManager.js';
+
+import { Player } from '@rafateoli/discord-music-player';
+
+import fs from 'fs';
 
 async function initDb() {
   mongoose.set('strictQuery', true);
@@ -33,11 +40,9 @@ function initClient() {
   client.commands = new Discord.Collection();
   client.events = new Discord.Collection();
 
-  // require('./games/GameManager')(Discord, client);
-  require('./guilds/GuildManager')(client);
+  GuildManager(client);
 
   // Music Player
-  const { Player } = require("@rafateoli/discord-music-player");
   const player = new Player(client, {
       leaveOnEmpty: true, // This options are optional.
   });
@@ -48,18 +53,20 @@ function initClient() {
 }
 
 function initHandlers(client) {
-  const fs = require('fs')
   const handlerFiles = fs.readdirSync('handlers');
-  handlerFiles.forEach((file) => {
-    const handler = require(`./handlers/${file}`);
+  handlerFiles.forEach( async (file) => {
+    const module = await import(`./handlers/${file}`);
+    const handler = module.default;
     handler(client, Discord);
   });
 }
 
 function initReadyEvent(client) {
-  client.on('ready', () => {
+  client.on('ready', async () => {
     console.log(`[INFO] Logged in as ${client.user.tag}!`);
-    require('./schedulers/TaskController')(client);
+    const module = await import(`./schedulers/TaskController.js`);
+    const handler = module.default;
+    handler(client);
   });
 }
 

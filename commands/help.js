@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     name: "help",
     description: "This command displays a list of all available commands for the bot.",
     execute(message, args, Discord, client) {

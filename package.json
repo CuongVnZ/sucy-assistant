@@ -6,6 +6,7 @@
   "scripts": {
     "start": "nodemon index.js"
   },
+  "type": "module",
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -16,6 +17,7 @@
     "mongoose": "^6.0.8",
     "newsapi": "^2.4.1",
     "nodemon": "^2.0.20",
+    "openai": "^4.8.0",
     "wikipedia": "^1.1.6"
   }
 }

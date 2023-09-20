@@ -1,4 +1,4 @@
-module.exports = (Discord, client) => {
+export default (Discord, client) => {
     //console.log(client.sucy.guilds, "1")
     client.on('messageReactionAdd', async (reaction, user) => {
         try {

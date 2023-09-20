@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 // Define the schema for the JSON data
-module.exports = new mongoose.Schema({
+export default new mongoose.Schema({
     name: String,
     id: String,
     prefix: String,

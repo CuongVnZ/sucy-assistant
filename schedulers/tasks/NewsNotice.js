@@ -1,9 +1,11 @@
-const NewsAPI = require('newsapi');
-const Discord = require('discord.js');
+// const NewsAPI = require('newsapi');
+import NewsAPI from 'newsapi';
+// const Discord = require('discord.js');
+import Discord from 'discord.js';
 
 const newsapi = new NewsAPI('c678e618580f4cb8b888dd09911f56a4');
 
-module.exports = (client) => {
+export default (client) => {
     run(client)
     setInterval(run, 10000, client)
 }

@@ -1,4 +1,4 @@
-class Ticket{
+class Ticket {
     constructor(author, channelId, messageGlobal, guild){
         this.author = author;
         this.channelId = channelId;
@@ -8,4 +8,4 @@ class Ticket{
     //Do some configurations...
 }
 
-module.exports = Ticket;
+export default Ticket;

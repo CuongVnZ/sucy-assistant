@@ -1,7 +1,7 @@
-const { RepeatMode } = require('@rafateoli/discord-music-player');
-const { EmbedBuilder } = require('discord.js');
+import { RepeatMode } from '@rafateoli/discord-music-player';
+import { EmbedBuilder } from 'discord.js';
 
-module.exports = {
+export default {
     name: 'play',
     aliases: ['p', 'skip', 'stop', 'queue'], //We are using aliases to run the skip and stop command follow this tutorial if lost: https://www.youtube.com/watch?v=QBUJ3cdofqc
     cooldown: 0,

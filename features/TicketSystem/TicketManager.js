@@ -1,6 +1,9 @@
-const { EmbedBuilder, ChannelType, PermissionsBitField } = require('discord.js');
-const GuildManager = require('../../guilds/GuildManager');
-const Ticket = require('./Ticket');
+// const { EmbedBuilder, ChannelType, PermissionsBitField } = require('discord.js');
+import { EmbedBuilder, ChannelType, PermissionsBitField } from 'discord.js';
+// const GuildManager = require('../../guilds/GuildManager');
+import GuildManager from '../../guilds/GuildManager.js';
+// const Ticket = require('./Ticket');
+import Ticket from './Ticket.js';
 
 async function createTicket(message, args, client){
     const currentGuild = GuildManager.getGuild(message.guild.id, client);
@@ -164,4 +167,5 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-module.exports.createTicket = createTicket;
+// module.exports.createTicket = createTicket;
+export { createTicket }

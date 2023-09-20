@@ -1,4 +1,4 @@
-class Guild{
+class Guild {
     constructor() {
         
     }
@@ -8,4 +8,4 @@ class Guild{
     //Do some configurations...
 }
 
-module.exports = Guild;
+export default Guild;

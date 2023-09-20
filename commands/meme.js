@@ -1,6 +1,6 @@
-const axios = require('axios'); // Require the 'axios' package to make API requests
+import axios from 'axios';
 
-module.exports = {
+export default {
     name: 'meme',
     description: "This command generates or displays a meme.",
     execute(message, args, Discord, client){

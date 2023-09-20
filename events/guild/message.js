@@ -1,4 +1,4 @@
-module.exports = (Discord, client) => {
+export default (Discord, client) => {
     client.on('messageCreate', async (message) => {
         const prefix = '-';
         if(!message.content.startsWith(prefix) || message.author.bot) return;
