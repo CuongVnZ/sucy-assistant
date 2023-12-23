@@ -4,7 +4,7 @@
   "description": "Essential bot for Discord server",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "dev": "bun run --hot index.js"
   },
   "type": "module",
   "author": "",
