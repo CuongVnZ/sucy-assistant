@@ -5,7 +5,7 @@ import GuildManager from '../../guilds/GuildManager.js';
 // const Ticket = require('./Ticket');
 import Ticket from './Ticket.js';
 
-async function createTicket(message, args, client){
+async function createTicket(message, args, Discord, client){
     const currentGuild = GuildManager.getGuild(message.guild.id, client);
 
     const TICKET_CATEGORY = currentGuild.features.ticketSystem.categoryId;

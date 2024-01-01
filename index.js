@@ -40,7 +40,8 @@ function initClient() {
   client.commands = new Discord.Collection();
   client.events = new Discord.Collection();
 
-  GuildManager(client);
+  // Guild Manager
+  GuildManager.initializeGuilds(client);
 
   // Music Player
   const player = new Player(client, {
