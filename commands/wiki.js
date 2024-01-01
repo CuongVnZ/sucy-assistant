@@ -1,4 +1,3 @@
-// const wiki = require('wikipedia');
 import wiki from 'wikipedia';
 
 export default {

@@ -1,4 +1,3 @@
-// const TicketManager = require('../features/TicketSystem/TicketManager')
 import { createTicket } from '../features/TicketSystem/TicketManager.js'
 
 export default {
